@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   version: "1"
-  title: "Helloworld documentation"
+  title: "Musiclibrary documentation"
 
 
 servers:
@@ -13,21 +13,21 @@ servers:
 
 paths:
 
-  /helloworld:
+  /songs:
     post:
-      summary: "Create a Helloworld translation"
+      summary: "Create a Musiclibrary"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Helloworld"
+              $ref: "#/components/schemas/music"
       responses:
         201:
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/music"
       security:
         - sigv4: [ ]
       x-amazon-apigateway-request-validator: validate_request
@@ -40,9 +40,9 @@ paths:
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
-  /helloworld/{uuid}:
+  /songs/{uuid}:
     get:
-      summary: "Find helloworld translation by uuid"
+      summary: "Find music in library by uuid"
       parameters:
         - in: path
           name: uuid
@@ -55,7 +55,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/music"
       security:
         - sigv4: [ ]
       x-amazon-apigateway-integration:
@@ -70,13 +70,24 @@ paths:
 
 components:
   schemas:
-    Helloworld:
-      type: object
+    music:
+      type: Array
       properties:
-        language:
-          type: string
-        value:
-          type: string
+        songs:
+          type: Object
+          schema:
+            $ref: "#/components/schemas/song"
+    song:
+      type: Object
+      properties:
+        title:
+          type: String
+        genre:
+          type: String
+        author:
+          type: String
+        date:
+          type:String
 
 securityDefinitions:
   sigv4:
