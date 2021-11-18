@@ -27,7 +27,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       # Chemin du handler de la lambda
-      Handler: src.handler.find_hello_msg
+      Handler: src.handler.find_music
       # Runtime utilisé pour l'exécution de la lambda
       Runtime: python3.7
       # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
@@ -40,7 +40,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld/{uuid}
+            Path: /music/{uuid}
             Method: GET
       # Variables d'environnement
       Environment:
@@ -50,7 +50,7 @@ Resources:
   CreateHelloMsgFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src.handler.create_hello_msg
+      Handler: src.handler.create_music
       Runtime: python3.7
       Policies:
         - DynamoDBCrudPolicy:
@@ -60,7 +60,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref DefaultApi
-            Path: /helloworld
+            Path: /music
             Method: POST
       Environment:
         Variables:
@@ -71,7 +71,7 @@ Resources:
   Table:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub "helloworld-${StageName}"
+      TableName: !Sub "music-${StageName}"
       BillingMode: PAY_PER_REQUEST
       KeySchema:
         - AttributeName: uuid

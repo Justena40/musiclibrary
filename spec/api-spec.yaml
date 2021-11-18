@@ -1,7 +1,7 @@
 openapi: "3.0.1"
 info:
   version: "1"
-  title: "Helloworld documentation"
+  title: "Music documentation"
 
 
 servers:
@@ -13,21 +13,21 @@ servers:
 
 paths:
 
-  /helloworld:
+  /music:
     post:
-      summary: "Create a Helloworld translation"
+      summary: "Create a music"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Helloworld"
+              $ref: "#/components/schemas/music"
       responses:
         201:
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/music"
       security:
         - sigv4: [ ]
       x-amazon-apigateway-request-validator: validate_request
@@ -36,13 +36,13 @@ paths:
           default:
             statusCode: 201
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateHelloMsgFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CreateMusicFunction.Arn}/invocations"
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
-  /helloworld/{uuid}:
+  /music/{uuid}:
     get:
-      summary: "Find helloworld translation by uuid"
+      summary: "Find a music by uuid"
       parameters:
         - in: path
           name: uuid
@@ -55,7 +55,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Helloworld"
+                $ref: "#/components/schemas/music"
       security:
         - sigv4: [ ]
       x-amazon-apigateway-integration:
@@ -63,20 +63,25 @@ paths:
           default:
             statusCode: 200
         uri:
-          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindHelloMsgFunction.Arn}/invocations"
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${FindMusicFunction.Arn}/invocations"
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy
 
 components:
   schemas:
-    Helloworld:
+    music:
       type: object
       properties:
-        language:
+        Author:
           type: string
-        value:
+        date:
           type: string
+        genre:
+          type: string
+        title:
+          type: string
+
 
 securityDefinitions:
   sigv4:

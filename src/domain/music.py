@@ -1,11 +1,12 @@
 import json
 import uuid
 
-
-class HelloMsg:
+class Music:
     def __init__(self, **kwargs) -> None:
-        self.language = kwargs["language"]
-        self.value = kwargs["value"]
+        self.author = kwargs["author"]
+        self.genre = kwargs["genre"]
+        self.title = kwargs["title"]
+        self.date = kwargs["date"]
         self.uuid = str(uuid.uuid4())
 
     def to_dict(self):
@@ -15,7 +16,7 @@ class HelloMsg:
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, HelloMsg):
+        if not isinstance(other, Music):
             return NotImplemented
 
-        return self.language == other.language and self.value == other.value
+        return self.author == other.author and self.genre == other.genre and self.date == other.date and self.title == other.title
