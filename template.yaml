@@ -22,6 +22,44 @@ Resources:
           Parameters:
             # Chemin vers la spec OpenAPI
             Location: !Sub "s3://${CicdBucket}/spec/api-spec.yaml"
+    
+  CsvBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: "justinelab4"
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: "s3:ObjectCreated:*"
+            Function: !GetAtt ImportSongCsvFunction.Arn
+            Filter: 
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: .csv
+
+  ProcessingLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !Ref ImportSongCsvFunction
+      Principal:  s3.amazonaws.com
+      SourceArn: !GetAtt CsvBucket.Arn
+      SourceAccount: !Ref AWS::AccountId
+
+  ImportSongCsvFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      # Chemin du handler de la lambda
+      Handler: src.handler.import_song_csv
+      # Runtime utilisé pour l'exécution de la lambda
+      Runtime: python3.7
+      # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+      # Droits IAM affectés à la l'exécution de la lambda
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Table
+
 
   # https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
   FindSongsFunction:

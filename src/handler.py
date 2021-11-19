@@ -9,6 +9,15 @@ logger = logging.getLogger()
 print("create dynamodb resources")
 resources_mgr = ResourcesMgr()
 
+def import_song_csv(event, context):
+    #Lambda 
+    
+    return {
+        "statusCode": 200,
+        "headers": {"Content-Type": "application/json"},
+        "body": song.to_json(),
+    }
+
 
 def create_song(event, context):
     print(event)

@@ -37,7 +37,7 @@ def _pty():
 
 @task
 def stack_build(ctx):
-    ctx.run(f"sam build --region {_aws_region()} --use-container")
+    ctx.run(f"sam build --region {_aws_region()} ")
 
 
 @task(pre=[stack_build])
