@@ -2,6 +2,7 @@ from src.domain.song import Song
 from src.domain.song_dao import SongDao
 from src.services.csv_importer import CSVImporter
 from src.core.resources_mgr import ResourcesMgr
+from src.domain.metrics import put_metrics
 
 import logging
 import json
@@ -24,6 +25,7 @@ def create_song(event, context):
         table_name=resources_mgr.table_name(),
     )
 
+    put_metrics.put_metrics("Create", "Sum", False)
     dao.create(song)
 
     return {

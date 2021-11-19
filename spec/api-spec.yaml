@@ -10,6 +10,11 @@ servers:
       api_id:
         default: api_id
         description: set api id
+  - url: "https://{api_id}.execute-api.justine-lab4.amazonaws.com/live"
+    variables:
+      api_id:
+        default: api_id
+        description: set api id
 
 paths:
   /songs:
